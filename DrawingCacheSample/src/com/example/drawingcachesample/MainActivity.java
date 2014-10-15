@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -83,6 +85,11 @@ import com.ui.custom_scrollview.LockingScrollView;
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void buttonPush(View v){
+		Intent mIntent = new Intent(this, NextActivity.class);
+		startActivity(mIntent);
+	}
+	
 	public void registScreen(){
 		String filepath = Environment.getExternalStorageDirectory() + "/"
 				+ "sample" + "/" + System.currentTimeMillis() + ".jpg";
