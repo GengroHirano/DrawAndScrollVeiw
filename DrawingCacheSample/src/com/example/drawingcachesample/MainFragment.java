@@ -92,6 +92,9 @@ public class MainFragment extends Fragment implements NextActivity.WindowFocusCh
 			e.printStackTrace();
 			Toast.makeText(getActivity(), "エラー", Toast.LENGTH_SHORT).show();
 		}
+		finally{
+			save_bmp.recycle();
+		}
 	}
 
 }

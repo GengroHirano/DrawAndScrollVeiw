@@ -115,6 +115,9 @@ import com.ui.custom_scrollview.LockingScrollView;
 			e.printStackTrace();
 			Toast.makeText(this, "エラー", Toast.LENGTH_SHORT).show();
 		}
+		finally{
+			save_bmp.recycle();
+		}
 	}
 
 }

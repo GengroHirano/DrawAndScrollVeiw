@@ -1,5 +1,7 @@
 package com.example.drawingcachesample;
 
+import java.util.Formatter.BigDecimalLayoutForm;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -44,7 +46,13 @@ import android.view.View;
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		Log.v("size", ""+w +" : "+ h);
-		_bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+		if( _bitmap != null ){
+			_bitmap.recycle();
+			_bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+		}
+		else{
+			_bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+		}
 		_canvas = new Canvas(_bitmap);
 	}
 
