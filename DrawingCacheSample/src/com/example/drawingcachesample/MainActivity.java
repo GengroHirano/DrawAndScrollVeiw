@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -48,11 +49,12 @@ import com.ui.custom_scrollview.LockingScrollView;
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		Log.v("layout_size", ""+relative.getWidth() + " : " + relative.getHeight());
-		editScreen = new TouchPaint(this);
-		relative.addView(editScreen, relative.getWidth(), relative.getHeight());
-		mScrollView = (LockingScrollView)findViewById(R.id.scrollView);
 		super.onWindowFocusChanged(hasFocus);
+		if (editScreen == null) {
+			editScreen = new TouchPaint(this);
+			relative.addView(editScreen, relative.getWidth(), relative.getHeight());
+			mScrollView = (LockingScrollView)findViewById(R.id.scrollView);
+		}
 	}
 
 	@Override
@@ -79,10 +81,23 @@ import com.ui.custom_scrollview.LockingScrollView;
 				mScrollView.setScrollingEnabled(false);
 				Toast.makeText(this, "EditMode_ON", Toast.LENGTH_SHORT).show();
 			}
+			break;
+		case R.id.action_red:
+			Log.v("tag", "colorRED");
+			editScreen.changeColor(Color.RED);
+			break;
+		case R.id.action_blue:
+			Log.v("tag", "colorBLUE");
+			editScreen.changeColor(Color.BLUE);
+			break;
+		case R.id.action_yellow:
+			Log.v("tag", "colorYELLOW");
+			editScreen.changeColor(Color.YELLOW);
+			break;
 		default:
 			break;
 		}
-		return super.onOptionsItemSelected(item);
+		return true;
 	}
 
 	public void buttonPush(View v){

@@ -13,9 +13,19 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_regist"/>
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_red"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:title="赤"/>
+    <item
+        android:id="@+id/action_blue"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="青"/>
+    <item
+        android:id="@+id/action_yellow"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="黄色"/>
 
 </menu>

@@ -1,34 +1,34 @@
 package com.example.drawingcachesample;
 
-import java.util.Formatter.BigDecimalLayoutForm;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-@SuppressLint("ClickableViewAccessibility") public class TouchPaint extends View {
+@SuppressLint("ClickableViewAccessibility") 
+public class TouchPaint extends View {
 
 	private boolean isEdit;
-
-	private float oldX = 0f, oldY = 0f;
-	private Paint paint;
+	private Paint mPaint;
+	private Path mPath;
 
 	public TouchPaint(Context context) {
 		super(context);
 		isEdit = false;
-		paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setColor(Color.LTGRAY);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(8);
-		paint.setStrokeCap(Paint.Cap.ROUND);
-		paint.setStrokeJoin(Paint.Join.ROUND);
+
+		mPath = new Path();
+
+		mPaint = new Paint();
+		mPaint.setAntiAlias(true);
+		mPaint.setStyle(Paint.Style.STROKE);
+		mPaint.setStrokeWidth(8);
+		mPaint.setStrokeCap(Paint.Cap.ROUND);
+		mPaint.setStrokeJoin(Paint.Join.ROUND);
 	}
 
 	public void setEditMode(boolean mode){
@@ -42,10 +42,10 @@ import android.view.View;
 
 	Bitmap _bitmap;
 	Canvas _canvas;
-
+	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		Log.v("size", ""+w +" : "+ h);
+		Log.v("onSizeChanged", ""+w +" : "+ h);
 		if( _bitmap != null ){
 			_bitmap.recycle();
 			_bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
@@ -58,19 +58,23 @@ import android.view.View;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.v("Touch", ""+isEdit);
 		if( !isEdit ){
 			return false;
 		}
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			oldX = event.getX();
-			oldY = event.getY();
+			Log.v("色", Integer.toHexString(mPaint.getColor()));
+			mPath.reset();
+			mPath.moveTo(event.getX(), event.getY());
 			break;
 		case MotionEvent.ACTION_MOVE:
-			_canvas.drawLine(oldX, oldY, event.getX(), event.getY(), paint);
-			oldX = event.getX();
-			oldY = event.getY();
+			mPath.lineTo(event.getX(), event.getY());
+			invalidate();
+			break;
+		case MotionEvent.ACTION_UP:
+			mPath.lineTo(event.getX(), event.getY());
+			_canvas.drawPath(mPath, mPaint);
+			mPath.reset();
 			invalidate();
 			break;
 		default:
@@ -81,7 +85,15 @@ import android.view.View;
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
 		canvas.drawBitmap(_bitmap, 0, 0, null);
+		canvas.drawPath(mPath, mPaint);
+	}
+
+	/**
+	 * ペンの色を変える
+	 * @param color カラーコード
+	 */
+	public void changeColor(int color){
+		mPaint.setColor(color);
 	}
 }
